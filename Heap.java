@@ -20,3 +20,12 @@ public class Heap {
             heapify(index, currentSize);
         }
     }
+     // ---------- Top-down construction via inserts ----------
+    public void insert(String newValue) {
+        if (currentSize >= heapArray.length) {
+            throw new IllegalStateException("Heap is full");
+        }
+        heapArray[currentSize] = newValue;
+        swim(currentSize);
+        currentSize++;
+    }
