@@ -52,3 +52,14 @@ public class TryHeapsort {
         for (int index = 0; index < Math.min(20, bottomUpSortedResult.length); index++) {
             System.out.println((index + 1) + ": " + bottomUpSortedResult[index]);
         }
+
+           // Check if sorts match
+        boolean resultsMatch = true;
+        for (int index = 0; index < bottomUpSortedResult.length; index++) {
+            if (!bottomUpSortedResult[index].equals(topDownSortedResult[index])) {
+                resultsMatch = false;
+                System.out.println("Mismatch at index " + index + 
+                    ": " + bottomUpSortedResult[index] + " vs " + topDownSortedResult[index]);
+                break;
+            }
+        }
