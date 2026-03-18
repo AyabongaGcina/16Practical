@@ -63,3 +63,9 @@ public class Heap {
             }
         }
     }
+    private void swap(int firstIndex, int secondIndex) {
+        String tempValue = heapArray[firstIndex];
+        heapArray[firstIndex] = heapArray[secondIndex];
+        heapArray[secondIndex] = tempValue;
+    }
+    
