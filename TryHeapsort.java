@@ -41,3 +41,14 @@ public class TryHeapsort {
         endTimeNano = System.nanoTime();
         long topDownDuration = endTimeNano - startTimeNano;
         
+           // ---------- Display results ----------
+        System.out.println("\n=== TIMING RESULTS ===");
+        System.out.printf("Bottom-up build + sort: %.3f ms%n", bottomUpDuration / 1_000_000.0);
+        System.out.printf("Top-down build + sort:   %.3f ms%n", topDownDuration / 1_000_000.0);
+        
+        // Verify first few words are sorted
+        System.out.println("\n=== VERIFICATION (first 20 sorted words) ===");
+        System.out.println("Bottom-up sort result:");
+        for (int index = 0; index < Math.min(20, bottomUpSortedResult.length); index++) {
+            System.out.println((index + 1) + ": " + bottomUpSortedResult[index]);
+        }
