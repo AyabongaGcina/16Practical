@@ -7,3 +7,16 @@ public class Heap {
         heapArray = new String[capacity];
         currentSize = 0;
     }
+     // ---------- Bottom-up construction ----------
+    public void buildUp(String[] inputArray) {
+        // Copy array into heap
+        for (int index = 0; index < inputArray.length; index++) {
+            heapArray[index] = inputArray[index];
+        }
+        currentSize = inputArray.length;
+
+        // Heapify from last parent down to root
+        for (int index = (currentSize / 2) - 1; index >= 0; index--) {
+            heapify(index, currentSize);
+        }
+    }
