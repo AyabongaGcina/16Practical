@@ -10,3 +10,6 @@ public class ulysess_cleaned {
         String destinationFilePath = "cleaned_ulysses.txt";
         
         int totalCleanWords = 0;
+        try (BufferedReader reader = new BufferedReader(new FileReader(sourceFilePath));
+             PrintWriter writer = new PrintWriter(new FileWriter(destinationFilePath))) {
+            
