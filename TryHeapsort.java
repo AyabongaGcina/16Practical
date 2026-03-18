@@ -14,3 +14,8 @@ public class TryHeapsort {
             System.err.println("No words found in file. Exiting.");
             return;
         }
+        System.out.println("Total words to sort: " + allWords.length);
+        // Make copies for each method
+        String[] bottomUpInput = allWords.clone();
+        String[] topDownInput = allWords.clone();
+         
