@@ -68,4 +68,40 @@ public class Heap {
         heapArray[firstIndex] = heapArray[secondIndex];
         heapArray[secondIndex] = tempValue;
     }
-    
+     // ---------- Sorting ----------
+    public String[] sort() {
+        String[] sortedArray = new String[currentSize];
+        
+        // Copy heap to preserve original
+        String[] copiedHeap = heapArray.clone();
+        int reducedSize = currentSize;
+
+        // Heapsort: repeatedly remove max
+        for (int index = 0; index < sortedArray.length; index++) {
+            // Swap root with last element
+            swap(0, reducedSize - 1);
+            sortedArray[index] = copiedHeap[reducedSize - 1];
+            reducedSize--;
+
+            // Restore heap property
+            heapify(0, reducedSize);
+        }
+
+        // Reverse to get ascending order
+        for (int index = 0; index < sortedArray.length / 2; index++) {
+            String tempValue = sortedArray[index];
+            sortedArray[index] = sortedArray[sortedArray.length - 1 - index];
+            sortedArray[sortedArray.length - 1 - index] = tempValue;
+        }
+
+        return sortedArray;
+    }
+    // Getters for testing
+    public int size() {
+        return currentSize;
+    }
+
+    public boolean isEmpty() {
+        return currentSize == 0;
+    }
+}
