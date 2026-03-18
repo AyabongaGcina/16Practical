@@ -1,4 +1,8 @@
-//Consulted DeepSeek for Heapify Logic
+// Ayabonga Gcina
+// 4446494
+// Practical 6 - Heap implementation for heapsort
+// Consulted DeepSeek for Heapify Logic
+
 public class Heap {
     private String[] heapArray;
     private int currentSize;
@@ -7,96 +11,122 @@ public class Heap {
         heapArray = new String[capacity];
         currentSize = 0;
     }
-     // ---------- Bottom-up construction ----------
+
+    // ---------- Bottom-up construction ----------
     public void buildUp(String[] inputArray) {
         // Copy array into heap
-        for (int index = 0; index < inputArray.length; index++) {
-            heapArray[index] = inputArray[index];
+        for (int i = 0; i < inputArray.length; i++) {
+            heapArray[i] = inputArray[i];
         }
         currentSize = inputArray.length;
 
         // Heapify from last parent down to root
-        for (int index = (currentSize / 2) - 1; index >= 0; index--) {
-            heapify(index, currentSize);
+        for (int i = (currentSize / 2) - 1; i >= 0; i--) {
+            heapify(i, currentSize);
         }
     }
-     // ---------- Top-down construction via inserts ----------
-    public void insert(String newValue) {
+
+    // ---------- Top-down construction via inserts ----------
+    public void insert(String value) {
         if (currentSize >= heapArray.length) {
             throw new IllegalStateException("Heap is full");
         }
-        heapArray[currentSize] = newValue;
+        heapArray[currentSize] = value;
         swim(currentSize);
         currentSize++;
     }
-      // ---------- Heap operations ----------
-    private void heapify(int rootIndex, int heapLimit) {
-        int largestIndex = rootIndex;
-        int leftChildIndex = 2 * rootIndex + 1;
-        int rightChildIndex = 2 * rootIndex + 2;
 
-        if (leftChildIndex < heapLimit &&
-            heapArray[leftChildIndex].compareTo(heapArray[largestIndex]) > 0) {
-            largestIndex = leftChildIndex;
+    // ---------- Heap operations ----------
+    private void heapify(int index, int heapSize) {
+        int largest = index;
+        int left = 2 * index + 1;
+        int right = 2 * index + 2;
+
+        if (left < heapSize && heapArray[left].compareTo(heapArray[largest]) > 0) {
+            largest = left;
+        }
+        if (right < heapSize && heapArray[right].compareTo(heapArray[largest]) > 0) {
+            largest = right;
         }
 
-        if (rightChildIndex < heapLimit &&
-            heapArray[rightChildIndex].compareTo(heapArray[largestIndex]) > 0) {
-            largestIndex = rightChildIndex;
-        }
-
-        if (largestIndex != rootIndex) {
-            swap(rootIndex, largestIndex);
-            heapify(largestIndex, heapLimit);
+        if (largest != index) {
+            swap(index, largest);
+            heapify(largest, heapSize);
         }
     }
 
-    private void swim(int childIndex) {
-        while (childIndex > 0) {
-            int parentIndex = (childIndex - 1) / 2;
-
-            if (heapArray[childIndex].compareTo(heapArray[parentIndex]) > 0) {
-                swap(childIndex, parentIndex);
-                childIndex = parentIndex;
+    private void swim(int index) {
+        while (index > 0) {
+            int parent = (index - 1) / 2;
+            if (heapArray[index].compareTo(heapArray[parent]) > 0) {
+                swap(index, parent);
+                index = parent;
             } else {
                 break;
             }
         }
     }
-    private void swap(int firstIndex, int secondIndex) {
-        String tempValue = heapArray[firstIndex];
-        heapArray[firstIndex] = heapArray[secondIndex];
-        heapArray[secondIndex] = tempValue;
+
+    private void swap(int i, int j) {
+        String temp = heapArray[i];
+        heapArray[i] = heapArray[j];
+        heapArray[j] = temp;
     }
-     // ---------- Sorting ----------
+
+    // ---------- Sorting ----------
     public String[] sort() {
-        String[] sortedArray = new String[currentSize];
-        
-        // Copy heap to preserve original
-        String[] copiedHeap = heapArray.clone();
-        int reducedSize = currentSize;
+        String[] workingHeap = heapArray.clone(); // Work entirely on the copy
+        int heapSize = currentSize;
+        String[] sorted = new String[currentSize];
 
         // Heapsort: repeatedly remove max
-        for (int index = 0; index < sortedArray.length; index++) {
-            // Swap root with last element
-            swap(0, reducedSize - 1);
-            sortedArray[index] = copiedHeap[reducedSize - 1];
-            reducedSize--;
+        for (int i = 0; i < sorted.length; i++) {
+            // Swap root with last element in workingHeap
+            String temp = workingHeap[0];
+            workingHeap[0] = workingHeap[heapSize - 1];
+            workingHeap[heapSize - 1] = temp;
 
-            // Restore heap property
-            heapify(0, reducedSize);
+            // Save max element
+            sorted[i] = workingHeap[heapSize - 1];
+            heapSize--;
+
+            // Heapify the copied heap
+            heapifyOnCopy(workingHeap, 0, heapSize);
         }
 
         // Reverse to get ascending order
-        for (int index = 0; index < sortedArray.length / 2; index++) {
-            String tempValue = sortedArray[index];
-            sortedArray[index] = sortedArray[sortedArray.length - 1 - index];
-            sortedArray[sortedArray.length - 1 - index] = tempValue;
+        for (int i = 0; i < sorted.length / 2; i++) {
+            String temp = sorted[i];
+            sorted[i] = sorted[sorted.length - 1 - i];
+            sorted[sorted.length - 1 - i] = temp;
         }
 
-        return sortedArray;
+        return sorted;
     }
-    // Getters for testing
+
+    // Helper method to heapify on copied array
+    private void heapifyOnCopy(String[] heap, int index, int heapSize) {
+        int largest = index;
+        int left = 2 * index + 1;
+        int right = 2 * index + 2;
+
+        if (left < heapSize && heap[left].compareTo(heap[largest]) > 0) {
+            largest = left;
+        }
+        if (right < heapSize && heap[right].compareTo(heap[largest]) > 0) {
+            largest = right;
+        }
+
+        if (largest != index) {
+            String temp = heap[index];
+            heap[index] = heap[largest];
+            heap[largest] = temp;
+
+            heapifyOnCopy(heap, largest, heapSize);
+        }
+    }
+
+    // ---------- Getters ----------
     public int size() {
         return currentSize;
     }
