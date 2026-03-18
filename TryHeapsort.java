@@ -28,4 +28,16 @@ public class TryHeapsort {
         
         long endTimeNano = System.nanoTime();
         long bottomUpDuration = endTimeNano - startTimeNano;
-         
+        
+        // ---------- Top-down timing ----------
+        startTimeNano = System.nanoTime();
+        
+        Heap topDownHeap = new Heap(topDownInput.length);
+        for (String currentWord : topDownInput) {
+            topDownHeap.insert(currentWord);
+        }
+        String[] topDownSortedResult = topDownHeap.sort();
+        
+        endTimeNano = System.nanoTime();
+        long topDownDuration = endTimeNano - startTimeNano;
+        
